@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clase 02 · Diseño de Sistemas · 2026</title>
+    <!-- Fuente profesional Inter de Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
+        /* ===== Reset y Configuración Base (Mobile-First) ===== */
         *,
         *::before,
         *::after {
@@ -17,6 +19,7 @@
         }
 
         :root {
+            /* Paleta de colores moderna (inspirada en 2026) */
             --bg-primary: #f8f9fc;
             --bg-secondary: #ffffff;
             --text-primary: #1a1c23;
@@ -28,7 +31,7 @@
             --border: #e2e6ed;
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
-            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-bg: rgba(255, 255, 255, 0.7);
             --glass-border: rgba(0, 0, 0, 0.05);
             --glass-shadow: 0 8px 32px rgba(0,0,0,0.04);
             --radius-sm: 8px;
@@ -39,6 +42,7 @@
             --transition-smooth: 250ms cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* Modo Oscuro (preferencia del sistema) */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-primary: #0d1117;
@@ -52,7 +56,7 @@
                 --border: #30363d;
                 --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
                 --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
-                --glass-bg: rgba(22, 27, 34, 0.7);
+                --glass-bg: rgba(22, 27, 34, 0.75);
                 --glass-border: rgba(255, 255, 255, 0.08);
                 --glass-shadow: 0 8px 32px rgba(0,0,0,0.25);
             }
@@ -78,6 +82,7 @@
             transition: background-color var(--transition-smooth), color var(--transition-smooth);
         }
 
+        /* Contenedor principal con ancho máximo legible */
         .page {
             width: 100%;
             max-width: 780px;
@@ -86,9 +91,8 @@
             gap: 1.5rem;
         }
 
-        /* Cabecera con partículas animadas de fondo */
+        /* ===== Cabecera con efecto Glassmorphism ===== */
         .header {
-            position: relative;
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -100,30 +104,11 @@
             flex-direction: column;
             gap: 1rem;
             transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-            overflow: hidden; /* Para que el canvas no sobresalga */
         }
 
         .header:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 40px rgba(0,0,0,0.06);
-        }
-
-        /* Canvas de partículas (fondo absoluto) */
-        #particleCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Los clics pasan a los elementos */
-            z-index: 0;
-            opacity: 0.6; /* Sutil */
-        }
-
-        /* Todo el contenido del header debe estar por encima del canvas */
-        .header > *:not(canvas) {
-            position: relative;
-            z-index: 1;
         }
 
         .chapter-tag {
@@ -172,6 +157,7 @@
             gap: 0.4rem;
         }
 
+        /* ===== Secciones de contenido ===== */
         .section {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
@@ -228,6 +214,7 @@
             max-width: 70ch;
         }
 
+        /* ===== Tabla comparativa (responsive) ===== */
         .table-responsive {
             overflow-x: auto;
             margin: 0.5rem 0;
@@ -265,6 +252,7 @@
             border-bottom: none;
         }
 
+        /* ===== Tarjeta de cita destacada ===== */
         .quote-card {
             background: linear-gradient(135deg, var(--accent-soft) 0%, transparent 100%);
             border-left: 4px solid var(--accent);
@@ -276,6 +264,7 @@
             margin: 0.5rem 0;
         }
 
+        /* ===== Pie de página ===== */
         .footer {
             text-align: center;
             font-size: 0.8rem;
@@ -285,6 +274,7 @@
             margin-top: 1rem;
         }
 
+        /* ===== Micro-interacciones y animaciones ===== */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -307,6 +297,7 @@
         .section:nth-child(5) { animation-delay: 0.25s; }
         .section:nth-child(6) { animation-delay: 0.3s; }
 
+        /* Efecto hover en enlaces */
         a {
             color: var(--accent);
             text-decoration: none;
@@ -320,6 +311,7 @@
             border-bottom-color: var(--accent-light);
         }
 
+        /* ===== Responsive: Ajustes para pantallas pequeñas ===== */
         @media (max-width: 600px) {
             body {
                 padding: 1rem;
@@ -352,13 +344,12 @@
 </head>
 <body>
     <div class="page">
-        <!-- Cabecera con canvas de partículas -->
+        <!-- Cabecera principal -->
         <header class="header">
-            <canvas id="particleCanvas" aria-hidden="true"></canvas>
             <div class="chapter-tag">
-                <span>📘</span> Capítulo 02 / 28
+                <span>📘</span> Capítulo 02 PRUEBA-COMO EXPERT / 28
             </div>
-            <h1 class="title">ANIMACION Heráclito: cómo dejar de buscar el método y empezar a elegir uno</h1>
+            <h1 class="title">Heráclito: cómo dejar de buscar el método y empezar a elegir uno</h1>
             <p class="subtitle">“Lo único permanente es el cambio.” — Heráclito · siglo v a.C.</p>
             <div class="meta-info">
                 <span>📅 Jue 21 mayo 2026</span>
@@ -395,7 +386,7 @@
             </div>
         </section>
 
-        <!-- Resto de secciones igual que antes -->
+        <!-- Repaso Bertalanffy -->
         <section class="section">
             <div class="section-header">
                 <span class="section-number">i.</span>
@@ -411,6 +402,7 @@
             </div>
         </section>
 
+        <!-- Tipos de sistemas -->
         <section class="section">
             <div class="section-header">
                 <span class="section-number">ii.</span>
@@ -428,6 +420,7 @@
             </div>
         </section>
 
+        <!-- Modelos clásicos -->
         <section class="section">
             <div class="section-header">
                 <span class="section-number">iii.</span>
@@ -440,6 +433,7 @@
             </div>
         </section>
 
+        <!-- Modelos ágiles -->
         <section class="section">
             <div class="section-header">
                 <span class="section-number">iv.</span>
@@ -452,6 +446,7 @@
             </div>
         </section>
 
+        <!-- Cómo elegir -->
         <section class="section">
             <div class="section-header">
                 <span class="section-number">v.</span>
@@ -464,144 +459,11 @@
             </div>
         </section>
 
+        <!-- Pie de página -->
         <footer class="footer">
             <p>Clase 02 · Sistemas de Información · 2026</p>
             <p style="margin-top:0.25rem;">Diseñado con principios modernos: CSS Grid, Flexbox, Glassmorphism & Dark Mode.</p>
         </footer>
     </div>
-
-    <!-- Script para la animación de partículas (sistema termodinámico) -->
-    <script>
-        (function() {
-            const canvas = document.getElementById('particleCanvas');
-            const ctx = canvas.getContext('2d');
-
-            // Ajusta el tamaño del canvas al contenedor
-            function resizeCanvas() {
-                const header = canvas.parentElement;
-                canvas.width = header.clientWidth;
-                canvas.height = header.clientHeight;
-            }
-
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-
-            // Partículas que representan un sistema abierto (intercambian energía)
-            const particles = [];
-            const PARTICLE_COUNT = 40;
-            const MAX_DISTANCE = 100; // Distancia máxima para dibujar conexiones
-            const colors = {
-                light: {
-                    particle: 'rgba(45, 106, 79, 0.9)',    // accent
-                    line: 'rgba(45, 106, 79, 0.2)'
-                },
-                dark: {
-                    particle: 'rgba(87, 171, 122, 0.9)',   // accent-light
-                    line: 'rgba(87, 171, 122, 0.2)'
-                }
-            };
-
-            // Determinar modo oscuro
-            function isDarkMode() {
-                return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            }
-
-            function getColors() {
-                return isDarkMode() ? colors.dark : colors.light;
-            }
-
-            // Crear partículas con posición y velocidad aleatoria
-            for (let i = 0; i < PARTICLE_COUNT; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.8,
-                    vy: (Math.random() - 0.5) * 0.8,
-                    radius: 2.5 + Math.random() * 2.5
-                });
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                const { particle: pColor, line: lColor } = getColors();
-
-                // Actualizar posiciones (movimiento browniano + rebote)
-                for (let p of particles) {
-                    p.x += p.vx;
-                    p.y += p.vy;
-
-                    // Rebote en bordes con un pequeño factor aleatorio (intercambio de energía)
-                    if (p.x < 0 || p.x > canvas.width) {
-                        p.vx *= -1;
-                        p.x = Math.max(0, Math.min(p.x, canvas.width));
-                        // Pequeña perturbación aleatoria (simula intercambio térmico)
-                        p.vx += (Math.random() - 0.5) * 0.2;
-                    }
-                    if (p.y < 0 || p.y > canvas.height) {
-                        p.vy *= -1;
-                        p.y = Math.max(0, Math.min(p.y, canvas.height));
-                        p.vy += (Math.random() - 0.5) * 0.2;
-                    }
-
-                    // Limitar velocidad máxima
-                    const maxSpeed = 1.5;
-                    p.vx = Math.min(maxSpeed, Math.max(-maxSpeed, p.vx));
-                    p.vy = Math.min(maxSpeed, Math.max(-maxSpeed, p.vy));
-                }
-
-                // Dibujar conexiones entre partículas cercanas
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-
-                        if (dist < MAX_DISTANCE) {
-                            ctx.beginPath();
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = lColor;
-                            ctx.lineWidth = 0.8 * (1 - dist / MAX_DISTANCE);
-                            ctx.stroke();
-                        }
-                    }
-                }
-
-                // Dibujar partículas
-                for (let p of particles) {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = pColor;
-                    ctx.fill();
-
-                    // Brillo interior (efecto de energía)
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius * 0.6, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                    ctx.fill();
-                }
-
-                requestAnimationFrame(animate);
-            }
-
-            // Escuchar cambios en el modo oscuro para actualizar colores sin reiniciar
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-                // No es necesario hacer nada, los colores se recalculan en cada frame
-            });
-
-            animate();
-
-            // Recalcular posiciones cuando se redimensiona (manteniendo las partículas)
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                // Reubicar partículas que queden fuera del nuevo tamaño
-                for (let p of particles) {
-                    p.x = Math.min(p.x, canvas.width);
-                    p.y = Math.min(p.y, canvas.height);
-                }
-            });
-        })();
-    </script>
 </body>
 </html>
