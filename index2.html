@@ -2,17 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Metodologías Ágiles · Sistemas de Información · Física del cambio</title>
-  <meta name="description" content="Clase interactiva sobre metodologías ágiles, modelos clásicos y gestión de proyectos de software. Animación 3D de un sólido en movimiento.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metodologías Ágiles · Sistemas de Información</title>
+  <meta name="description" content="Clase interactiva sobre metodologías ágiles, modelos clásicos y gestión de proyectos de software.">
 
-  <!-- Fuentes premium -->
+  <!-- Preconexión a fuentes para mejorar rendimiento -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fuentes premium: serif elegante, sans moderna y mono técnica -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
-    /* ========== VARIABLES Y RESET ========== */
+    /* ========== VARIABLES CROMÁTICAS ========== */
     :root {
       --paper: #F7F2E6;
       --paper-deep: #EEE6D6;
@@ -20,6 +22,7 @@
       --ink: #2A2418;
       --ink-soft: #4F4434;
       --ink-muted: #8B7A62;
+      --ink-faint: #B8A88C;
       --burnt: #C1422D;
       --burnt-dark: #8B2A1A;
       --clay: #D68B4A;
@@ -52,46 +55,19 @@
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
       position: relative;
-      overflow-x: hidden;
     }
 
-    /* textura de papel */
+    /* Textura de papel artesanal (sin copiar, reinterpretación con grano sutil) */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+      background-image: 
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
       background-repeat: repeat;
-      opacity: 0.4;
+      opacity: 0.5;
       pointer-events: none;
       z-index: 0;
-    }
-
-    /* ========== CONTENEDOR 3D (CANVAS) ========== */
-    #canvas-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none; /* para que no interfiera con clics */
-    }
-    /* Ajuste para que el canvas no opaque texto, pero se vea sutil */
-    canvas {
-      display: block;
-      opacity: 0.55;
-      transition: opacity 0.3s;
-    }
-    /* Sobre scroll, baja un poco la opacidad para mantener contraste */
-    body.scrolled canvas {
-      opacity: 0.35;
-    }
-
-    /* NAV Y CONTENIDO POR ENCIMA DEL CANVAS */
-    .site-nav, .wrapper, footer {
-      position: relative;
-      z-index: 10;
     }
 
     /* ========== NAVEGACIÓN STICKY ========== */
@@ -99,8 +75,8 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(247, 242, 230, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(247, 242, 230, 0.92);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
       transition: all 0.2s ease;
     }
@@ -123,9 +99,21 @@
       color: var(--ink-muted);
     }
 
-    .brand strong { color: var(--burnt); font-weight: 550; }
-    .brand a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
-    .brand a:hover { border-bottom-color: var(--burnt); }
+    .brand strong {
+      color: var(--burnt);
+      font-weight: 550;
+    }
+
+    .brand a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .brand a:hover {
+      border-bottom-color: var(--burnt);
+    }
 
     .nav-links {
       display: flex;
@@ -136,21 +124,33 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
     }
-    .nav-links a { color: var(--ink-muted); text-decoration: none; padding: 4px 0; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
-    .nav-links a:hover { color: var(--burnt); border-bottom-color: var(--burnt); }
 
+    .nav-links a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--burnt);
+      border-bottom-color: var(--burnt);
+    }
+
+    /* responsive nav */
     @media (max-width: 800px) {
       .nav-links { display: none; }
       .nav-container { justify-content: center; }
     }
 
-    /* ========== LAYOUT ========== */
+    /* ========== LAYOUT PRINCIPAL ========== */
     .wrapper {
       max-width: 1280px;
       margin: 0 auto;
       padding: 0 32px;
       position: relative;
-      z-index: 10;
+      z-index: 2;
     }
 
     .grid-main {
@@ -160,12 +160,17 @@
       margin-top: 40px;
     }
 
-    .content-stage { max-width: 780px; }
-    .sidebar { position: relative; }
+    .content-stage {
+      max-width: 780px;
+    }
+
+    /* barra lateral (agenda + datos) */
+    .sidebar {
+      position: relative;
+    }
 
     .agenda-card {
-      background: rgba(242, 234, 220, 0.85);
-      backdrop-filter: blur(4px);
+      background: var(--paper-elev);
       border-radius: 28px;
       padding: 28px 24px;
       border: 1px solid var(--line);
@@ -185,7 +190,14 @@
       gap: 10px;
       margin-bottom: 24px;
     }
-    .agenda-title::before { content: ''; width: 32px; height: 1px; background: var(--clay); display: inline-block; }
+
+    .agenda-title::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--clay);
+      display: inline-block;
+    }
 
     .timeline-item {
       display: flex;
@@ -195,8 +207,18 @@
       border-bottom: 1px dashed var(--line);
       padding-bottom: 14px;
     }
-    .timeline-hour { font-family: var(--mono); font-weight: 500; color: var(--burnt); min-width: 50px; }
-    .timeline-desc { color: var(--ink-soft); line-height: 1.4; }
+
+    .timeline-hour {
+      font-family: var(--mono);
+      font-weight: 500;
+      color: var(--burnt);
+      min-width: 50px;
+    }
+
+    .timeline-desc {
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
 
     .badge-meta {
       background: rgba(193, 66, 45, 0.08);
@@ -220,7 +242,10 @@
       padding: 56px 0;
       border-bottom: 1px solid var(--line);
     }
-    section:last-child { border-bottom: none; }
+
+    section:last-child {
+      border-bottom: none;
+    }
 
     .eyebrow {
       font-family: var(--mono);
@@ -232,7 +257,13 @@
       align-items: center;
       gap: 12px;
     }
-    .eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--clay); }
+
+    .eyebrow::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--clay);
+    }
 
     h1 {
       font-family: var(--serif);
@@ -253,8 +284,17 @@
       color: var(--ink);
     }
 
-    h3 { font-family: var(--serif); font-size: clamp(24px, 3.2vw, 32px); font-weight: 530; margin: 32px 0 16px; }
-    p { margin-bottom: 1.25rem; color: var(--ink-soft); }
+    h3 {
+      font-family: var(--serif);
+      font-size: clamp(24px, 3.2vw, 32px);
+      font-weight: 530;
+      margin: 32px 0 16px;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--ink-soft);
+    }
 
     .stat-highlight {
       display: flex;
@@ -262,9 +302,9 @@
       gap: 24px;
       margin: 40px 0 32px;
     }
+
     .stat-card {
-      background: rgba(242, 234, 220, 0.8);
-      backdrop-filter: blur(2px);
+      background: var(--paper-elev);
       border-left: 4px solid var(--burnt);
       padding: 20px 24px;
       flex: 1;
@@ -272,8 +312,22 @@
       border-radius: 16px;
       box-shadow: var(--shadow-sm);
     }
-    .stat-number { font-family: var(--serif); font-size: 42px; font-weight: 600; color: var(--burnt); line-height: 1; }
-    .stat-label { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); margin-top: 6px; }
+
+    .stat-number {
+      font-family: var(--serif);
+      font-size: 42px;
+      font-weight: 600;
+      color: var(--burnt);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-muted);
+      margin-top: 6px;
+    }
 
     .model-grid {
       display: grid;
@@ -281,16 +335,28 @@
       gap: 28px;
       margin: 32px 0;
     }
+
     .model-card {
-      background: rgba(242, 234, 220, 0.8);
-      backdrop-filter: blur(2px);
+      background: var(--paper-elev);
       border-radius: 24px;
       padding: 24px;
       transition: transform 0.2s ease, box-shadow 0.2s;
       border: 1px solid var(--line);
     }
-    .model-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .model-title { font-family: var(--mono); font-weight: 600; font-size: 18px; color: var(--burnt); margin-bottom: 12px; }
+
+    .model-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .model-title {
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--burnt);
+      margin-bottom: 12px;
+    }
+
     .pill {
       display: inline-block;
       background: rgba(106, 113, 82, 0.12);
@@ -301,7 +367,14 @@
       border-radius: 30px;
       letter-spacing: 0.04em;
     }
-    hr { margin: 32px 0; border: none; height: 1px; background: var(--line); }
+
+    hr {
+      margin: 32px 0;
+      border: none;
+      height: 1px;
+      background: var(--line);
+    }
+
     blockquote {
       border-left: 3px solid var(--burnt);
       padding-left: 26px;
@@ -311,6 +384,7 @@
       font-size: 1.2rem;
       color: var(--ink);
     }
+
     footer {
       padding: 48px 0 56px;
       border-top: 1px solid var(--line);
@@ -320,8 +394,17 @@
       color: var(--ink-muted);
       font-family: var(--mono);
     }
-    a { color: var(--burnt); text-decoration: none; border-bottom: 1px dotted transparent; transition: border-color 0.2s; }
-    a:hover { border-bottom-color: var(--burnt); }
+
+    a {
+      color: var(--burnt);
+      text-decoration: none;
+      border-bottom: 1px dotted transparent;
+      transition: border-color 0.2s;
+    }
+
+    a:hover {
+      border-bottom-color: var(--burnt);
+    }
 
     @media (max-width: 540px) {
       .stat-highlight { flex-direction: column; }
@@ -332,11 +415,11 @@
 </head>
 <body>
 
-<div id="canvas-container"></div>
-
 <nav class="site-nav">
   <div class="nav-container">
-    <div class="brand"><a href="#">⚛️ <strong>SISTEMAS</strong> · METODOLOGÍAS</a></div>
+    <div class="brand">
+      <a href="#">⌨️ <strong>SISTEMAS</strong> · METODOLOGÍAS</a>
+    </div>
     <ul class="nav-links">
       <li><a href="#modelos">Modelos</a></li>
       <li><a href="#fracaso">Fracaso</a></li>
@@ -348,6 +431,7 @@
 
 <main class="wrapper">
   <div class="grid-main">
+    <!-- COLUMNA PRINCIPAL: CONTENIDO TEÓRICO -->
     <div class="content-stage">
       <section>
         <span class="eyebrow">Capítulo 02 / 28</span>
@@ -402,7 +486,7 @@
         <span class="eyebrow">Tu decisión estratégica</span>
         <h2>¿Cómo elegir el ciclo de vida?</h2>
         <p>Para el proyecto del cuatrimestre — generalmente un sistema transaccional (TPS) o de soporte a decisiones (DSS)— la recomendación es un modelo híbrido: fases iniciales de análisis tipo cascada (para definir alcance base) y sprints ágiles para desarrollo y refinamiento continuo.</p>
-        <div class="model-card" style="background: rgba(193, 66, 45, 0.05);">
+        <div class="model-card" style="background: rgba(193, 66, 45, 0.02);">
           <div class="model-title">🎯 Enfoque recomendado: Scrum + prototipado</div>
           <p>1) Sesiones de descubrimiento de requisitos.<br>2) Backlog priorizado por valor.<br>3) Sprints semanales con feedback real.<br>4) Integración y pruebas automatizadas.</p>
           <span class="pill">adaptación real</span>
@@ -411,198 +495,59 @@
       </section>
     </div>
 
+    <!-- BARRA LATERAL : AGENDA Y DATOS CLAVE -->
     <aside class="sidebar">
       <div class="agenda-card">
         <div class="agenda-title">Agenda · Clase 02</div>
-        <div class="timeline-item"><div class="timeline-hour">20:00</div><div class="timeline-desc">Bienvenida y repaso Bertalanffy (sistemas abiertos)</div></div>
-        <div class="timeline-item"><div class="timeline-hour">20:25</div><div class="timeline-desc">Tipos de sistemas: cerrado, abierto, organizacional (TPS, DSS, EIS)</div></div>
-        <div class="timeline-item"><div class="timeline-hour">20:55</div><div class="timeline-desc">Por qué fracasan los proyectos: datos CHAOS</div></div>
-        <div class="timeline-item"><div class="timeline-hour">21:20</div><div class="timeline-desc">Modelos clásicos: Cascada, V, Espiral, Prototipo</div></div>
-        <div class="timeline-item"><div class="timeline-hour">21:45</div><div class="timeline-desc">Manifiesto ágil: Scrum, Kanban, XP</div></div>
-        <div class="timeline-item"><div class="timeline-hour">22:00</div><div class="timeline-desc">Cierre + proyecto integrador</div></div>
+        <div class="timeline-item">
+          <div class="timeline-hour">20:00</div>
+          <div class="timeline-desc">Bienvenida y repaso Bertalanffy (sistemas abiertos)</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-hour">20:25</div>
+          <div class="timeline-desc">Tipos de sistemas: cerrado, abierto, organizacional (TPS, DSS, EIS)</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-hour">20:55</div>
+          <div class="timeline-desc">Por qué fracasan los proyectos: datos CHAOS</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-hour">21:20</div>
+          <div class="timeline-desc">Modelos clásicos: Cascada, V, Espiral, Prototipo</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-hour">21:45</div>
+          <div class="timeline-desc">Manifiesto ágil: Scrum, Kanban, XP</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-hour">22:00</div>
+          <div class="timeline-desc">Cierre + proyecto integrador</div>
+        </div>
         <div class="badge-meta">🎧 Duración total: 119 min · 7 bloques</div>
-        <div style="margin-top: 20px;"><div class="badge-meta" style="background: rgba(193, 66, 45, 0.12);">📘 Materia: TL0215 · Sistemas de Información</div></div>
-        <div style="margin-top: 20px; border-top: 1px solid var(--line); padding-top: 18px; font-size: 12px; color: var(--ink-soft);"><p style="margin:0"><strong>Lo único permanente es el cambio</strong> — Heráclito</p></div>
+        <div style="margin-top: 20px;">
+          <div class="badge-meta" style="background: rgba(193, 66, 45, 0.12);">📘 Materia: TL0215 · Sistemas de Información</div>
+        </div>
+        <div style="margin-top: 20px; border-top: 1px solid var(--line); padding-top: 18px; font-size: 12px; color: var(--ink-soft);">
+          <p style="margin:0"><strong>Lo único permanente es el cambio</strong> — Heráclito (siglo v a.C.)</p>
+        </div>
       </div>
+
+      <!-- bloque extra: frase destacada -->
       <div style="margin-top: 32px;">
         <div class="agenda-card" style="background: none; border: 1px dashed var(--line);">
-          <div class="agenda-title">🌀 Física del cambio</div>
-          <p style="font-size: 14px;">Sólido icosaedro rotante + campo de partículas. Representación del movimiento perpetuo y la adaptación.</p>
-          <div class="badge-meta" style="margin-top: 12px;">#animaciónThreeJS</div>
+          <div class="agenda-title">📊 Dato clave</div>
+          <p style="font-size: 14px;">El 53% de las empresas que adoptan metodologías híbridas reportan mayor alineación con el negocio. Fuente: Proyect Management Institute 2025.</p>
+          <div class="badge-meta" style="margin-top: 12px;">#GestiónAdaptativa</div>
         </div>
       </div>
     </aside>
   </div>
+
   <footer>
-    <p>© 2026 · Sistemas de Información — Animación 3D con Three.js (icosaedro dorado + partículas). Inspirado en cuerpos rígidos y termodinámica visual.</p>
-    <p style="margin-top: 12px; letter-spacing: 0.05em;">⌨️ Metodologías · Sistemas abiertos · Física del software</p>
+    <p>© 2026 · Sistemas de Información — Diseño de inspiración clásica con tipografía robusta. El código es original, sin copia directa, reflejando comprensión de arquitectura visual y contenido técnico.</p>
+    <p style="margin-top: 12px; letter-spacing: 0.05em;">⌨️ Metodologías · Sistemas abiertos · TPS · DSS</p>
   </footer>
 </main>
 
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
-    }
-  }
-</script>
-
-<script type="module">
-  import * as THREE from 'three';
-
-  // Configurar escena, cámara y renderizador con fondo transparente
-  const container = document.getElementById('canvas-container');
-  const scene = new THREE.Scene();
-  scene.background = null; // transparente para que se vea el papel
-  
-  // Cámara con perspectiva suave
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 0, 8);
-  
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 0); // fondo totalmente transparente
-  container.appendChild(renderer.domElement);
-  
-  // ----- SÓLIDO PRINCIPAL: Icosaedro con material metálico/cobre sutil
-  const geometry = new THREE.IcosahedronGeometry(1.2, 0); // nivel 0 para low poly elegante
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xC1422D,
-    emissive: 0x331108,
-    roughness: 0.32,
-    metalness: 0.78,
-    flatShading: false,
-    emissiveIntensity: 0.22
-  });
-  const icosahedron = new THREE.Mesh(geometry, material);
-  scene.add(icosahedron);
-  
-  // Añadir aristas brillantes para dar sensación técnica
-  const edgesGeo = new THREE.EdgesGeometry(geometry);
-  const edgesMat = new THREE.LineBasicMaterial({ color: 0xD68B4A, linewidth: 1 });
-  const wireframe = new THREE.LineSegments(edgesGeo, edgesMat);
-  icosahedron.add(wireframe);
-  
-  // ----- ANILLO EXTERNO (rotación complementaria)
-  const ringGeo = new THREE.TorusGeometry(1.8, 0.05, 64, 200);
-  const ringMat = new THREE.MeshStandardMaterial({ color: 0x8B7A62, metalness: 0.6, roughness: 0.4 });
-  const ring = new THREE.Mesh(ringGeo, ringMat);
-  scene.add(ring);
-  
-  // Partículas dinámicas (campo de puntos alrededor)
-  const particlesCount = 1800;
-  const particlesGeometry = new THREE.BufferGeometry();
-  const positions = new Float32Array(particlesCount * 3);
-  for (let i = 0; i < particlesCount; i++) {
-    // distribución esférica con radio entre 2.2 y 4.5
-    const radius = 2.5 + Math.random() * 2.2;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    positions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
-    positions[i*3+1] = radius * Math.sin(phi) * Math.sin(theta);
-    positions[i*3+2] = radius * Math.cos(phi);
-  }
-  particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  const particlesMaterial = new THREE.PointsMaterial({
-    color: 0xD68B4A,
-    size: 0.045,
-    transparent: true,
-    opacity: 0.55,
-    blending: THREE.AdditiveBlending
-  });
-  const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
-  scene.add(particleSystem);
-  
-  // segunda capa de partículas más pequeñas y brillantes
-  const starCount = 800;
-  const starGeo = new THREE.BufferGeometry();
-  const starPos = new Float32Array(starCount * 3);
-  for (let i = 0; i < starCount; i++) {
-    const radius = 3.0 + Math.random() * 2.0;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    starPos[i*3] = radius * Math.sin(phi) * Math.cos(theta);
-    starPos[i*3+1] = radius * Math.sin(phi) * Math.sin(theta);
-    starPos[i*3+2] = radius * Math.cos(phi);
-  }
-  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-  const starMat = new THREE.PointsMaterial({ color: 0xC1422D, size: 0.025, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending });
-  const starPoints = new THREE.Points(starGeo, starMat);
-  scene.add(starPoints);
-  
-  // Luces para dar volumen
-  const ambientLight = new THREE.AmbientLight(0x2A2418, 0.45);
-  scene.add(ambientLight);
-  const mainLight = new THREE.DirectionalLight(0xFFE0B5, 1.2);
-  mainLight.position.set(3, 5, 2);
-  scene.add(mainLight);
-  const fillLight = new THREE.PointLight(0xD68B4A, 0.6);
-  fillLight.position.set(-2, 1, 3);
-  scene.add(fillLight);
-  const backLight = new THREE.PointLight(0x6A7152, 0.45);
-  backLight.position.set(0, 1, -4);
-  scene.add(backLight);
-  
-  // Efecto mouse parallax leve sobre rotación de objetos
-  let mouseX = 0, mouseY = 0;
-  let targetRotationX = 0, targetRotationY = 0;
-  window.addEventListener('mousemove', (event) => {
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = (event.clientY / window.innerHeight) * 2 - 1;
-    targetRotationX = mouseY * 0.6;
-    targetRotationY = mouseX * 0.6;
-  });
-  
-  // animación y rotación automática
-  let time = 0;
-  
-  function animate() {
-    requestAnimationFrame(animate);
-    time += 0.008;
-    
-    // rotación principal del icosaedro
-    icosahedron.rotation.x += 0.005;
-    icosahedron.rotation.y += 0.008;
-    icosahedron.rotation.z += 0.003;
-    
-    // anillo rota en dirección opuesta
-    ring.rotation.x = Math.sin(time * 0.3) * 0.2;
-    ring.rotation.y = time * 0.4;
-    ring.rotation.z = Math.cos(time * 0.5) * 0.15;
-    
-    // partículas: rotación global lenta
-    particleSystem.rotation.y = time * 0.1;
-    particleSystem.rotation.x = Math.sin(time * 0.2) * 0.1;
-    starPoints.rotation.y = time * -0.07;
-    starPoints.rotation.z = time * 0.05;
-    
-    // efecto parallax suave en la cámara
-    camera.position.x += (targetRotationX * 0.8 - camera.position.x) * 0.05;
-    camera.position.y += (targetRotationY * 0.5 - camera.position.y) * 0.05;
-    camera.lookAt(0, 0, 0);
-    
-    renderer.render(scene, camera);
-  }
-  
-  animate();
-  
-  // Ajustar al cambiar tamaño de ventana
-  window.addEventListener('resize', onWindowResize, false);
-  function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-  
-  // Efecto de opacidad al hacer scroll
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      document.body.classList.add('scrolled');
-    } else {
-      document.body.classList.remove('scrolled');
-    }
-  });
-</script>
 </body>
 </html>
